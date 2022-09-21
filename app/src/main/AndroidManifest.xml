@@ -14,11 +14,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.RandomDog"
+        android:theme="@style/Theme.App.Starting"
         tools:targetApi="33">
-        <activity
-            android:name=".SplashActivity"
-            android:exported="false" />
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true">

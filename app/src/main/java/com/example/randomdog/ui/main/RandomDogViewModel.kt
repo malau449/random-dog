@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.randomdog.data.DogRepository
+import com.example.randomdog.model.Dog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,9 +49,11 @@ class RandomDogViewModel @Inject constructor(private val dogRepository : DogRepo
         //add url to db
         viewModelScope.launch {
             try{
-                if(randomDogUrl.value != null)
-                dogRepository.saveDogUrl(randomDogUrl.value.toString())
-                _isFavouriteDog.value = true
+                if(randomDogUrl.value != null && _isFavouriteDog.value == false){
+                    var dog = Dog(url = randomDogUrl.value.toString())
+                    dogRepository.saveDogUrl(dog)
+                    _isFavouriteDog.value = true
+                }
             } catch(exception: Exception){
                 throw exception
             }

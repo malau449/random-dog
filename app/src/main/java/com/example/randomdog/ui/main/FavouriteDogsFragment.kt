@@ -2,9 +2,11 @@ package com.example.randomdog.ui.main
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.randomdog.R
 import com.example.randomdog.databinding.FragmentFavouriteDogsBinding
 import com.example.randomdog.databinding.FragmentRandomDogBinding
+import com.example.randomdog.model.Dog
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,8 +28,11 @@ class FavouriteDogsFragment : Fragment() {
 
     private lateinit var viewModel: FavouriteDogsViewModel
 
+    private var coloumns = 0;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        coloumns = if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) 3 else 2
     }
 
     override fun onCreateView(
@@ -42,22 +48,32 @@ class FavouriteDogsFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         var recyclerView = view.findViewById<RecyclerView>(R.id.favouritesRecyclerView)
-        recyclerView.layoutManager = GridLayoutManager(this.context,2)
-        recyclerView.adapter = FavouritesAdapter(viewModel.FetchFavouriteDogs())
+        recyclerView.layoutManager = GridLayoutManager(this.context, coloumns)
 
+        viewModel.favouriteDogsList.observe(viewLifecycleOwner){
+            if(recyclerView.adapter == null){
+              recyclerView.adapter = FavouritesAdapter()
+            }
+            (recyclerView.adapter as FavouritesAdapter).updateList(it)
+        }
 
         return view
     }
 
-    class FavouritesAdapter(dataList: List<String>): RecyclerView.Adapter<FavouritesAdapter.ViewHolder>(){
+    override fun onResume() {
+        super.onResume()
+        viewModel.FetchFavouriteDogs()
+    }
 
-        var dataList = emptyList<String>()
+    class FavouritesAdapter(): RecyclerView.Adapter<FavouritesAdapter.ViewHolder>(){
+
+        var dataList = emptyList<Dog>()
 
         init {
             setData(dataList)
         }
 
-        fun setData(dataList: List<String>){
+        fun setData(dataList: List<Dog>){
             this.dataList = dataList
         }
 
@@ -76,14 +92,19 @@ class FavouriteDogsFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             // Get the data model based on position
-            var data = dataList[position]
+            var dog = dataList[position]
 
             // Set item views based on your views and data model
-            Picasso.get().load(data).into(holder.view)
+            Picasso.get().load(dog.url).into(holder.view)
         }
 
         override fun getItemCount(): Int {
             return dataList.size
+        }
+
+        public fun updateList(dataList: List<Dog>){
+            this.dataList = dataList
+            notifyDataSetChanged()
         }
     }
 }

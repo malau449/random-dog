@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.randomdog">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".RandomDogApplication"
         android:allowBackup="true"
@@ -15,6 +17,9 @@
         android:theme="@style/Theme.RandomDog"
         tools:targetApi="33">
         <activity
+            android:name=".SplashActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
@@ -24,5 +29,5 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET"/>
+
 </manifest>

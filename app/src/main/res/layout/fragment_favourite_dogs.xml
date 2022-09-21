@@ -8,13 +8,22 @@
             name="viewModel"
             type="com.example.randomdog.ui.main.FavouriteDogsViewModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/favouritesRecyclerView"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/favouritesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+        </ScrollView>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:visibility="gone"
+            android:background="@color/green"/>
+    </RelativeLayout>
 </layout>

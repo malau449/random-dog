@@ -23,16 +23,12 @@ class RandomDogFragment : Fragment() {
 
     private lateinit var viewModel: RandomDogViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_random_dog, container, false)
-        viewModel = ViewModelProvider(this).get(RandomDogViewModel::class.java)
+        viewModel = ViewModelProvider(this)[RandomDogViewModel::class.java]
 
         val view = binding.root
 
